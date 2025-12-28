@@ -10,6 +10,7 @@ import { CartProvider } from "./context/CartContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                 path="/login/forgotpassword"
                 element={<ForgotPassword />}
               />
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Routes>
           </main>
           <Footer />

@@ -1,12 +1,14 @@
 import books from '../data/booksMock';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import CheckoutSuccess from '../components/checkout/CheckoutSuccess';
 
 const HomePage = () => {
   const { addItem } = useCart();
 
   return (
     <div className="p-6">
+      <CheckoutSuccess />
       <h2 className="text-2xl font-bold mb-4">Catálogo</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {books.map(b => (
