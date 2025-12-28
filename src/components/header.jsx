@@ -6,6 +6,7 @@ const Header = () => {
       <nav className="header-footer-text">
         <Link to="/" className="mr-4">Relatos de papel</Link>
         <Link to="/cart">Carrito</Link>
+        <Link to="/login">Mi Cuenta</Link>
       </nav>
     </header>
   );

@@ -7,6 +7,9 @@ import HomePage from "./pages/HomePage";
 import BookDetailPage from "./pages/BookDetailPage";
 import CartPage from "./pages/CartPage";
 import { CartProvider } from "./context/CartContext";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   return (
@@ -20,6 +23,12 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/book/:id" element={<BookDetailPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/login/register" element={<Register />} />
+              <Route
+                path="/login/forgotpassword"
+                element={<ForgotPassword />}
+              />
             </Routes>
           </main>
           <Footer />
