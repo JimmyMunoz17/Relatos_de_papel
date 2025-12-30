@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const CartPage = () => {
   return (
-    <div className="p-6">
+    <div div className="min-h-[82vh] p-6 max-w-7xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Tu carrito</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="border p-4 rounded">

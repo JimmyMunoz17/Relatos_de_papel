@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState, useEffect } from "react"; // 
 import Header from "./components/header";
 import Footer from "./components/footer";
 import CartPanel from "./components/cart/CartPanel";
@@ -11,8 +12,24 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
 import CheckoutPage from "./pages/CheckoutPage";
+import SplashScreen from "./components/ui/SplashScreen"; //
 
 function App() {
+  const [loading, setLoading] = useState(true); // Estado inicial en true
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); // Se oculta tras 2 segundos
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Si está cargando, solo mostramos el Splash
+  if (loading) {
+    return <SplashScreen />;
+  }
+
   return (
     <CartProvider>
       <BrowserRouter>
