@@ -18,7 +18,7 @@ const BookDetailPage = () => {
               loading="lazy"
               className="w-full object-cover"
               onError={(e) => {
-                e.currentTarget.src = "/src/assets/img_book.svg";
+                e.currentTarget.src = "/public/assets/img_book.svg";
               }}
             ></img>
           </div>

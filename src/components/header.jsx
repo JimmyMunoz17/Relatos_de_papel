@@ -52,14 +52,14 @@ const Header = ({ user, onLogout }) => {
   };
 
   return (
-    <header className="bg-coffee-400 shadow-lg sticky top-0 z-50">
+    <header className="bg-coffee-400 shadow-lg sticky top-0 z-50 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo  */}
           <div className="flex items-center">
             <Link
               to="/"
-              className="text-4xl font-bold text-coffee-700 hover:text-coffee-950 transition-colors"
+              className="text-xl sm:text-2xl text-4xl font-bold text-coffee-700 hover:text-coffee-950 transition-colors"
             >
               Relatos de papel
             </Link>
