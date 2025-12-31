@@ -144,7 +144,7 @@ const Login = ({ onLogin }) => {
             </h3>
             <div className="flex gap-6 items-start">
               <img
-                src="/public/assets/img_credit_card.png"
+                src="./public/assets/img_credit_card.png"
                 alt="Múltiples medios de pago"
                 className="w-10 h-10 object-contain"
               />
