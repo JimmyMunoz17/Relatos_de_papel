@@ -18,7 +18,8 @@ const BookDetailPage = () => {
               loading="lazy"
               className="w-full object-cover"
               onError={(e) => {
-                e.currentTarget.src = "/public/assets/img_book.svg";
+                e.currentTarget.src =
+                  "https://res.cloudinary.com/ddbtvrcr0/image/upload/v1767207072/Relatos%20de%20papel/img_book_v0lt4v.svg";
               }}
             ></img>
           </div>

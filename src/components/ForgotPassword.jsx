@@ -37,7 +37,7 @@ const ForgotPassword = () => {
           </h3>
           <div className="flex gap-6 items-start">
             <img
-              src="/public/assets/img_credit_card.png"
+              src="https://res.cloudinary.com/ddbtvrcr0/image/upload/v1767207071/Relatos%20de%20papel/img_credit_card_aa4j3t.png"
               alt="Múltiples medios de pago"
               className="w-10 h-10 object-contain"
             />
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
 
           <div className="flex gap-6 items-start">
             <img
-              src="/public/assets/img_security.png"
+              src="https://res.cloudinary.com/ddbtvrcr0/image/upload/v1767207066/Relatos%20de%20papel/img_security_iajovh.png"
               alt="Garantía de seguridad"
               className="w-10 h-10 object-contain"
             />
@@ -70,7 +70,7 @@ const ForgotPassword = () => {
 
           <div className="flex gap-6 items-start">
             <img
-              src="/public/assets/img_truck.png"
+              src="https://res.cloudinary.com/ddbtvrcr0/image/upload/v1767207067/Relatos%20de%20papel/img_truck_nzmp2h.png"
               alt="Envíos a todo Colombia"
               className="w-10 h-10 object-contain"
             />
