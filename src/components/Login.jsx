@@ -23,33 +23,42 @@ const Login = ({ onLogin }) => {
     setError('');
 
     try {
-      // Simulación de login
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Login siempre exitoso - solo visual
-      const user = {
-        id: 1,
-        name: formData.email.split('@')[0] || 'Usuario',
-        email: formData.email || 'usuario@example.com',
-        avatar: null
-      };
-      onLogin(user);
-      navigate('/dashboard');
+      const email = formData.email.trim();
+      const password = formData.password.trim();
+      
+      if (!email && !password) {
+        const user = {
+          id: 1,
+          name: 'user',
+          email: 'user@example.com',
+          avatar: null
+        };
+        onLogin(user);
+      } else {
+        const user = {
+          id: 1,
+          name: email ? email.split('@')[0] : 'Usuario',
+          email: email || 'usuario@example.com',
+          avatar: null
+        };
+        onLogin(user);
+      }
+      navigate('/');
     } catch (err) {
-      // Incluso si hay error, permitir login
       const user = {
         id: 1,
-        name: 'Usuario',
-        email: formData.email || 'usuario@example.com',
+        name: 'user',
+        email: 'user@example.com',
         avatar: null
       };
       onLogin(user);
-      navigate('/dashboard');
+      navigate('/');
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-[82vh] flex flex-col justify-center py-10">
       <div className="max-w-7xl mx-auto px-4 py-10 ">
