@@ -18,7 +18,6 @@ import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
 import CheckoutPage from "./pages/CheckoutPage";
 import SplashScreen from "./components/ui/SplashScreen";
-import "./App.css";
 
 function AppContent() {
   const [user, setUser] = useState(null);
