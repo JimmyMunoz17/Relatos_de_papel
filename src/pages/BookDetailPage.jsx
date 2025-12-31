@@ -48,7 +48,7 @@ const BookDetailPage = () => {
             </p>
           </section>
         </main>
-        <aside className="border rounded-x1 p-6 h-fit space-y-4">
+        <aside className="border rounded p-6 h-fit space-y-4">
           <h1 className="font-semibold text-2xl text-center">Libro Nuevo</h1>
           <p className="text-green-600 text-base font-medium text-center">
             Quedan más de 100 unidades

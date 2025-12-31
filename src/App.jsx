@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -23,20 +24,19 @@ function AppContent() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Verificar si el usuario está logueado al cargar la app
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
 
-    // Verificar si ya se mostró el splash en esta sesión de pestaña
     const splashShown = sessionStorage.getItem("splashShown");
     if (!splashShown) {
       setShowSplash(true);
-      // Mostrar splash por 1 segundo solo la primera vez
       const timer = setTimeout(() => {
         setShowSplash(false);
         setLoading(false);
@@ -48,7 +48,6 @@ function AppContent() {
     }
   }, []);
 
-  // Guardar usuario en localStorage cuando cambie
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -62,26 +61,43 @@ function AppContent() {
   };
 
   const handleLogout = () => {
+    setIsLoggingOut(true);
     setUser(null);
+    setTimeout(() => {
+      navigate('/login');
+      setIsLoggingOut(false);
+    }, 100);
   };
 
-  // Rutas públicas (no requieren autenticación)
   const isPublicRoute = [
     "/login",
     "/login/register",
     "/login/forgotpassword",
   ].includes(location.pathname);
 
-  // Componente de protección de rutas
   const ProtectedRoute = ({ children }) => {
     if (loading) {
       return <SplashScreen />;
     }
 
-    return user ? children : <Navigate to="/login" replace />;
+    if (isLoggingOut) {
+      return <Navigate to="/login" replace />;
+    }
+
+    if (!user) {
+      const defaultUser = {
+        id: 1,
+        name: 'user',
+        email: 'user@example.com',
+        avatar: null
+      };
+      handleLogin(defaultUser);
+      return <SplashScreen />;
+    }
+
+    return children;
   };
 
-  // Redirigir usuarios autenticados desde ciertas rutas públicas
   const PublicRoute = ({ children }) => {
     if (
       ["/login", "/login/register", "/login/forgotpassword"].includes(
@@ -101,15 +117,12 @@ function AppContent() {
   return (
     <CartProvider>
       <div className="App">
-        {/* Mostrar Header solo si no estamos en rutas de login */}
         {!["/login", "/login/register", "/login/forgotpassword"].includes(
           location.pathname
         ) && <Header user={user} onLogout={handleLogout} />}
 
-        {/* <CartPanel /> */}
         <main>
           <Routes>
-            {/* Rutas públicas */}
             <Route path="/book/:id" element={<BookDetailPage />} />
             <Route
               path="/login"
@@ -136,7 +149,6 @@ function AppContent() {
               }
             />
 
-            {/* Rutas protegidas */}
             <Route
               path="/"
               element={
@@ -162,12 +174,10 @@ function AppContent() {
               }
             />
 
-            {/* Ruta catch-all para rutas no válidas */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </main>
 
-        {/* Mostrar Footer solo si no estamos en rutas de login */}
         {!["/login", "/login/register", "/login/forgotpassword"].includes(
           location.pathname
         ) && <Footer />}
