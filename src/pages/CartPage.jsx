@@ -1,6 +1,6 @@
-import CartList from '../components/cart/CartList';
-import CartSummary from '../components/cart/CartSummary';
-import { Link } from 'react-router-dom';
+import CartList from "../components/cart/CartList";
+import CartSummary from "../components/cart/CartSummary";
+import { Link } from "react-router-dom";
 
 const CartPage = () => {
   return (
@@ -13,7 +13,10 @@ const CartPage = () => {
         <div className="border p-4 rounded">
           <CartSummary />
         </div>
-        <Link to="/checkout" className="px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-center rounded">
+        <Link
+          to="/checkout"
+          className="px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-center rounded"
+        >
           Proceder al Checkout
         </Link>
       </div>
