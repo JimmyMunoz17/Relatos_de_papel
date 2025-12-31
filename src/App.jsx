@@ -64,7 +64,7 @@ function AppContent() {
     setIsLoggingOut(true);
     setUser(null);
     setTimeout(() => {
-      navigate('/login');
+      navigate("/login");
       setIsLoggingOut(false);
     }, 100);
   };
@@ -87,9 +87,9 @@ function AppContent() {
     if (!user) {
       const defaultUser = {
         id: 1,
-        name: 'user',
-        email: 'user@example.com',
-        avatar: null
+        name: "user",
+        email: "user@example.com",
+        avatar: null,
       };
       handleLogin(defaultUser);
       return <SplashScreen />;
@@ -117,10 +117,7 @@ function AppContent() {
   return (
     <CartProvider>
       <div className="App">
-        {!["/login", "/login/register", "/login/forgotpassword"].includes(
-          location.pathname
-        ) && <Header user={user} onLogout={handleLogout} />}
-
+        <Header user={user} onLogout={handleLogout} />
         <main>
           <Routes>
             <Route path="/book/:id" element={<BookDetailPage />} />
@@ -173,14 +170,10 @@ function AppContent() {
                 </ProtectedRoute>
               }
             />
-
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </main>
-
-        {!["/login", "/login/register", "/login/forgotpassword"].includes(
-          location.pathname
-        ) && <Footer />}
+        <Footer />
       </div>
     </CartProvider>
   );
