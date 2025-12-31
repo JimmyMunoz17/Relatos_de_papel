@@ -1,7 +1,12 @@
 <h1 align="center"> 📚 Relatos de Papel </h1>
-
-![Relatos de papel]()
-
+<p align="center">
+   <img 
+  src="https://github.com/Another91/Unir/blob/main/public/img_readme.jpg" 
+  alt="Relatos de papel"
+  width="600"
+  height="450"
+/>
+</p>
 <p align="center">
    <a href="">"📚 Relatos de papel"</a>
 </p>
