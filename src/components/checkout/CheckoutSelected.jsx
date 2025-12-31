@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext';
 
-const CheckoutSelected = ({onComplete}) => {
+const CheckoutSelected = () => {
   const { items, totalPrice, clear} = useCart();
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const CheckoutSelected = ({onComplete}) => {
     <div>
       <div className="border rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4 text-gray-800">Artículos</h2>
-          <hr class="border-gray-400"></hr>
+          <hr class="border-b border-gray-400"></hr>
             {items.map(item => (
               <div key={item.id} className="flex justify-between items-center border-b py-3 last:border-b-0">
                 <div className="flex items-center space-x-4">
@@ -39,7 +39,7 @@ const CheckoutSelected = ({onComplete}) => {
                 <span>Total a Pagar:</span>
                 <span className="font-bold">${totalPrice.toFixed(2)}</span>
               </div>
-              <button onClick={handleCheckout} className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-lg font-bold text-xl">
+              <button onClick={handleCheckout} className="w-full bg-orange-600 hover:bg-orange-700 text-white py-4 rounded-lg font-bold text-xl">
                 Confirmar y Pagar
               </button>
             </div>
