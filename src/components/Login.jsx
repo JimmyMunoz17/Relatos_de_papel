@@ -1,60 +1,60 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const email = formData.email.trim();
       const password = formData.password.trim();
-      
+
       if (!email && !password) {
         const user = {
           id: 1,
-          name: 'user',
-          email: 'user@example.com',
-          avatar: null
+          name: "user",
+          email: "user@example.com",
+          avatar: null,
         };
         onLogin(user);
       } else {
         const user = {
           id: 1,
-          name: email ? email.split('@')[0] : 'Usuario',
-          email: email || 'usuario@example.com',
-          avatar: null
+          name: email ? email.split("@")[0] : "Usuario",
+          email: email || "usuario@example.com",
+          avatar: null,
         };
         onLogin(user);
       }
-      navigate('/');
+      navigate("/");
     } catch (err) {
       const user = {
         id: 1,
-        name: 'user',
-        email: 'user@example.com',
-        avatar: null
+        name: "user",
+        email: "user@example.com",
+        avatar: null,
       };
       onLogin(user);
-      navigate('/');
+      navigate("/");
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,7 @@ const Login = ({ onLogin }) => {
             <h1 className="text-2xl font-semibold text-heading mb-6">
               Iniciar sesión
             </h1>
-            
+
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm mb-4">
                 {error}
@@ -123,11 +123,14 @@ const Login = ({ onLogin }) => {
               disabled={loading}
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+              {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
             </button>
             <div className="text-sm pt-2 font-medium text-body">
               ¿No estás registrado?{" "}
-              <a href="/login/register" className="text-fg-brand hover:underline">
+              <a
+                href="/login/register"
+                className="text-fg-brand hover:underline"
+              >
                 Crear cuenta
               </a>
             </div>
@@ -141,7 +144,7 @@ const Login = ({ onLogin }) => {
             </h3>
             <div className="flex gap-6 items-start">
               <img
-                src="/src/assets/img_credit_card.png"
+                src="/public/assets/img_credit_card.png"
                 alt="Múltiples medios de pago"
                 className="w-10 h-10 object-contain"
               />
@@ -157,7 +160,7 @@ const Login = ({ onLogin }) => {
 
             <div className="flex gap-6 items-start">
               <img
-                src="/src/assets/img_security.png"
+                src="/public/assets/img_security.png"
                 alt="Garantía de seguridad"
                 className="w-10 h-10 object-contain"
               />
@@ -174,7 +177,7 @@ const Login = ({ onLogin }) => {
 
             <div className="flex gap-6 items-start">
               <img
-                src="/src/assets/img_truck.png"
+                src="/public/assets/img_truck.png"
                 alt="Envíos a todo Colombia"
                 className="w-10 h-10 object-contain"
               />

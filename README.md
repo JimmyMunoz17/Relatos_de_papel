@@ -1,7 +1,7 @@
 <h1 align="center"> 📚 Relatos de Papel </h1>
 <p align="center">
    <img 
-  src="https://github.com/Another91/Unir/blob/main/public/img_readme.jpg" 
+  src="https://github.com/Another91/Unir/blob/main/public/assets/img_readme.jpg" 
   alt="Relatos de papel"
   width="600"
   height="450"
@@ -19,7 +19,12 @@
 
 La aplicación permite a los usuarios registrarse, buscar libros físicos y digitales, gestionar un carrito de compras, realizar pagos seguros y consultar el historial de pedidos. Además, incorpora funcionalidades de reseñas de libros, soporte multilingüe y un diseño responsivo y accesible.
 
+<<<<<<< HEAD
 La interfaz visual del proyecto fue desarrollada utilizando React 19 y Tailwind CSS v4.0, garantizando una experiencia de usuario moderna, consistente y adaptable a diferentes dispositivos. :mega:</p>
+=======
+La interfaz visual del proyecto fue desarrollada utilizando React 19 y Tailwind CSS v4.0, garantizando una experiencia de usuario moderna, consistente y adaptable a diferentes dispositivos.:mega:</p>
+
+>>>>>>> upstream/main
 </p>
 
 <h2>:file_folder: Acceso al proyecto</h2>
