@@ -3,7 +3,7 @@
 ![Relatos de papel]()
 
 <p align="center">
-   <a href=""><img src="" width="100" height="100" alt="Relatos de papel"</a>
+   <a href="">"📚 Relatos de papel"</a>
 </p>
 <p align="center">
    <img src="https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green">
