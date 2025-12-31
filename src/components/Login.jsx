@@ -1,12 +1,70 @@
-const Login = () => {
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const Login = ({ onLogin }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      // Simulación de login
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Login siempre exitoso - solo visual
+      const user = {
+        id: 1,
+        name: formData.email.split('@')[0] || 'Usuario',
+        email: formData.email || 'usuario@example.com',
+        avatar: null
+      };
+      onLogin(user);
+      navigate('/dashboard');
+    } catch (err) {
+      // Incluso si hay error, permitir login
+      const user = {
+        id: 1,
+        name: 'Usuario',
+        email: formData.email || 'usuario@example.com',
+        avatar: null
+      };
+      onLogin(user);
+      navigate('/dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-[82vh] flex flex-col justify-center py-10">
       <div className="max-w-7xl mx-auto px-4 py-10 ">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
-          <form action="#" className="border border-default p-5">
+          <form onSubmit={handleSubmit} className="border border-default p-5">
             <h1 className="text-2xl font-semibold text-heading mb-6">
               Iniciar sesión
             </h1>
+            
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm mb-4">
+                {error}
+              </div>
+            )}
+
             <InputForm
               label="Correo Electrónico"
               id="email"
@@ -14,8 +72,10 @@ const Login = () => {
               type="email"
               autoComplete="email"
               placeholder="example@email.com"
+              value={formData.email}
+              onChange={handleChange}
               required
-            ></InputForm>
+            />
             <InputForm
               label="Contraseña"
               id="password"
@@ -23,39 +83,42 @@ const Login = () => {
               type="password"
               autoComplete="password"
               placeholder="**********"
+              value={formData.password}
+              onChange={handleChange}
               required
-            ></InputForm>
-            <div class="flex items-start my-6">
-              <div class="flex items-center">
+            />
+            <div className="flex items-start my-6">
+              <div className="flex items-center">
                 <input
                   id="checkbox-remember"
                   type="checkbox"
                   value=""
-                  class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
-                ></input>
+                  className="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
+                />
                 <label
-                  for="checkbox-remember"
-                  class="ms-2 text-sm font-medium text-heading"
+                  htmlFor="checkbox-remember"
+                  className="ms-2 text-sm font-medium text-heading"
                 >
                   Recordarme
                 </label>
               </div>
               <a
                 href="/login/forgotpassword"
-                class="ms-auto text-sm font-medium text-fg-brand hover:underline"
+                className="ms-auto text-sm font-medium text-fg-brand hover:underline"
               >
                 ¿Olvidó su contraseña?
               </a>
             </div>
             <button
               type="submit"
-              class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition"
+              disabled={loading}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Iniciar Sesión
+              {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </button>
-            <div class="text-sm pt-2 font-medium text-body">
+            <div className="text-sm pt-2 font-medium text-body">
               ¿No estás registrado?{" "}
-              <a href="/login/register" class="text-fg-brand hover:underline">
+              <a href="/login/register" className="text-fg-brand hover:underline">
                 Crear cuenta
               </a>
             </div>
@@ -129,6 +192,8 @@ function InputForm({
   type,
   autoComplete,
   placeholder,
+  value,
+  onChange,
   required = false,
 }) {
   return (
@@ -146,7 +211,9 @@ function InputForm({
           type={type}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          class="bg-neutral-secondary-medium rounded-md bg-white/5 border text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          value={value}
+          onChange={onChange}
+          className="bg-neutral-secondary-medium rounded-md bg-white/5 border text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
           required={required}
         />
       </div>
