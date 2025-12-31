@@ -35,7 +35,7 @@ La interfaz visual del proyecto fue desarrollada utilizando React 19 y Tailwind 
 - [Jimmy Muñoz](https://github.com/JimmyMunoz17)
 - [Adrián Villalba](https://github.com/AdrianVillalba11)
 - [Mateo Manjarres](https://github.com/Another91)
-- [Ivan Herrera](https://github.com/Ivanherr050)
 - [German Godoy](https://github.com/GodoyGerman)
+- [Ivan Herrera](https://github.com/Ivanherr050)
 
 ![GitHub Org's stars](https://img.shields.io/github/stars/jimmyMunoz17?style=social)
