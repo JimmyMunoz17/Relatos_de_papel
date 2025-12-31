@@ -121,16 +121,11 @@ const Header = ({ user, onLogout }) => {
                   <CartSummary />
                   {totalItems > 0 && (
                     <div className="mt-4 space-y-2">
-                      <Link
-                        to="/cart"
-                        className="block w-full text-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded border border-blue-600 transition-colors"
-                        onClick={() => setIsCartOpen(false)}
-                      >
-                        Ver Carrito Completo
-                      </Link>
+
+
                       <Link
                         to="/checkout"
-                        className="block w-full text-center px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+                        className="block w-full text-center px-4 py-2 text-sm text-white bg-[#F54900] hover:bg-[#d84000] rounded transition-colors"
                         onClick={() => setIsCartOpen(false)}
                       >
                         Proceder al Checkout

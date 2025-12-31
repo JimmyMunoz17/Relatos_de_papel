@@ -15,8 +15,11 @@ const CartSummary = () => {
         <div>${totalPrice.toFixed(2)}</div>
       </div>
       <div className="mt-3 flex justify-between">
-        <Link to="/cart" className="px-3 py-2 bg-green-600 text-white rounded">Ver carrito</Link>
-        <button onClick={clear} className="px-3 py-2 bg-red-600 text-white rounded">Vaciar</button>
+        <Link to="/cart" className="px-3 py-2 bg-[#F54900] text-white rounded text-sm font-semibold hover:bg-[#d84000] transition">Ver carrito</Link>
+        <button
+          onClick={clear}
+          className="px-3 py-2 bg-[#F54900] text-white rounded text-sm font-semibold hover:bg-[#d84000] transition">Vaciar</button>
+
       </div>
     </div>
   );
