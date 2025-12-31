@@ -144,7 +144,7 @@ const Login = ({ onLogin }) => {
             </h3>
             <div className="flex gap-6 items-start">
               <img
-                src="./public/assets/img_credit_card.png"
+                src="public/assets/img_credit_card.png"
                 alt="Múltiples medios de pago"
                 className="w-10 h-10 object-contain"
               />
@@ -160,7 +160,7 @@ const Login = ({ onLogin }) => {
 
             <div className="flex gap-6 items-start">
               <img
-                src="/public/assets/img_security.png"
+                src="public/assets/img_security.png"
                 alt="Garantía de seguridad"
                 className="w-10 h-10 object-contain"
               />
@@ -177,7 +177,7 @@ const Login = ({ onLogin }) => {
 
             <div className="flex gap-6 items-start">
               <img
-                src="/public/assets/img_truck.png"
+                src="public/assets/img_truck.png"
                 alt="Envíos a todo Colombia"
                 className="w-10 h-10 object-contain"
               />
