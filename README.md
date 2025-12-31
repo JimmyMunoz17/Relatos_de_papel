@@ -19,7 +19,7 @@
 
 La aplicación permite a los usuarios registrarse, buscar libros físicos y digitales, gestionar un carrito de compras, realizar pagos seguros y consultar el historial de pedidos. Además, incorpora funcionalidades de reseñas de libros, soporte multilingüe y un diseño responsivo y accesible.
 
-La interfaz visual del proyecto fue desarrollada utilizando React 19 y Tailwind CSS v4.0, garantizando una experiencia de usuario moderna, consistente y adaptable a diferentes dispositivos.:mega:</p>
+La interfaz visual del proyecto fue desarrollada utilizando React 19 y Tailwind CSS v4.0, garantizando una experiencia de usuario moderna, consistente y adaptable a diferentes dispositivos. :mega:</p>
 
 </p>
 
