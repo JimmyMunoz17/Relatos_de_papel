@@ -1,16 +1,38 @@
-# React + Vite
+<h1 align="center"> 📚 Relatos de Papel </h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Relatos de papel]()
 
-Currently, two official plugins are available:
+<p align="center">
+   <a href=""><img src="" width="100" height="100" alt="Relatos de papel"</a>
+</p>
+<p align="center">
+   <img src="https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green">
+   <img src="https://img.shields.io/badge/Version-v0.1-green">
+</p>
+<p align="center">
+  <p> :mega: Relatos de Papel es una aplicación web desarrollada como proyecto académico, orientada a la digitalización de una librería tradicional mediante una plataforma de comercio electrónico moderna y segura.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+La aplicación permite a los usuarios registrarse, buscar libros físicos y digitales, gestionar un carrito de compras, realizar pagos seguros y consultar el historial de pedidos. Además, incorpora funcionalidades de reseñas de libros, soporte multilingüe y un diseño responsivo y accesible.
 
-## React Compiler
+La interfaz visual del proyecto fue desarrollada utilizando React 19 y Tailwind CSS v4.0, garantizando una experiencia de usuario moderna, consistente y adaptable a diferentes dispositivos. El proyecto sigue buenas prácticas de gestión de proyectos (PMBOK) y un enfoque de desarrollo iterativo, priorizando la usabilidad, la seguridad y la escalabilidad del sistema. :mega:</p>
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<h2>:file_folder: Acceso al proyecto</h2>
 
-## Expanding the ESLint configuration
+- Instalado [Node.js v25.2.1](https://nodejs.org/es/download/current)
+- Descargue el repositorio y e instalarlas dependencias y paquetes con el comando: :point_right: npm install :point_left:
+- Backend desarrollado en React 19 con Tailwind CSS v4.0
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<h2>🛠️ Tecnología</h2>
+
+- Frontend: React 19, Tailwind CSS v4.0
+- Herramienta de desarrollo: Vite
+- Entorno de ejecución: Node.js v25.2.1
+- Arquitectura: Aplicación web basada en componentes
+
+<h2>:information_desk_person: Autores</h2>
+
+- [Jimmy Muñoz](https://github.com/JimmyMunoz17)
+- 
+
+![GitHub Org's stars](https://img.shields.io/github/stars/jimmyMunoz17?style=social)
