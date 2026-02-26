@@ -56,9 +56,13 @@ function AppContent() {
     }
   }, [user]);
 
+  // Manejo de login
+  
   const handleLogin = (userData) => {
     setUser(userData);
   };
+
+  // Manejo de logout
 
   const handleLogout = () => {
     setIsLoggingOut(true);

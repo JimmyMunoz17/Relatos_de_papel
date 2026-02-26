@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import books from "../data/booksMock";
+import { searchBooksFuzzy, getLocalCategories } from "../services/bookService";
 import { useCart } from "../context/CartContext";
 import CartList from "./cart/CartList";
 import CartSummary from "./cart/CartSummary";
@@ -8,44 +8,89 @@ import CartSummary from "./cart/CartSummary";
 const Header = ({ user, onLogout }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { totalItems, totalPrice } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
+  const abortRef = useRef(null);
+  const searchRef = useRef(null);
 
-  // Filtrar libros cada vez que el usuario escribe
+  const categories = getLocalCategories();
+
+  // Buscar libros desde el API con debounce
   useEffect(() => {
-    if (searchTerm.trim().length > 0) {
-      const filtered = books
-        .filter((book) =>
-          book.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .slice(0, 5);
-      setSuggestions(filtered);
-    } else {
+    if (searchTerm.trim().length < 2) {
       setSuggestions([]);
+      return;
     }
+
+    // Cancelar petición anterior
+    if (abortRef.current) abortRef.current.abort();
+
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    const timeout = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const results = await searchBooksFuzzy(searchTerm, controller.signal);
+        setSuggestions(results.slice(0, 6));
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("Error en búsqueda fuzzy:", err);
+          setSuggestions([]);
+        }
+      } finally {
+        setIsSearching(false);
+      }
+    }, 350); // debounce 350ms
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
   }, [searchTerm]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const term = searchTerm.trim().toLowerCase();
+    const term = searchTerm.trim();
     if (!term) return;
 
-    const foundBook = books.find((b) => b.title.toLowerCase().includes(term));
-    if (foundBook) {
-      navigate(`/book/${foundBook.id}`);
-      setSearchTerm("");
-      setSuggestions([]);
-    }
+    // Navegar a HomePage con el query de búsqueda
+    navigate(`/?q=${encodeURIComponent(term)}`);
+    setSuggestions([]);
+    setShowCategories(false);
   };
 
-  const selectSuggestion = (bookId) => {
-    navigate(`/book/${bookId}`);
+  const selectSuggestion = (book) => {
+    // Redirigir a la página de detalle del libro
+    navigate(`/book/${book.id}`);
     setSearchTerm("");
     setSuggestions([]);
+    setShowCategories(false);
   };
+
+  const selectCategory = (category) => {
+    navigate(`/?cat=${encodeURIComponent(category)}`);
+    setSearchTerm("");
+    setSuggestions([]);
+    setShowCategories(false);
+  };
+
+  // Cerrar dropdowns al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setSuggestions([]);
+        setShowCategories(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const isActiveRoute = (path) => {
     return location.pathname === path;
@@ -66,9 +111,42 @@ const Header = ({ user, onLogout }) => {
           </div>
 
           {/* Barra de búsqueda  */}
-          <div className="flex-1 max-w-md mx-8 relative">
-            <form onSubmit={handleSearch} className="relative">
-              <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+          <div className="flex-1 max-w-md mx-8 relative" ref={searchRef}>
+            <form onSubmit={handleSearch} className="relative flex gap-2">
+              <div className="relative flex-1">
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-coffee-950"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Buscar libros... (ej: garcia, quijote)"
+                  className="block w-full pr-10 px-4 py-2 border border-gray-300 bg-coffee-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-coffee-950 placeholder-coffee-950"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onFocus={() => {
+                    if (searchTerm.trim().length < 2) setShowCategories(true);
+                  }}
+                />
+              </div>
+              {/* Botón de categorías */}
+              <button
+                type="button"
+                onClick={() => setShowCategories(!showCategories)}
+                className="flex items-center gap-1 px-3 py-2 bg-coffee-300 border border-gray-300 rounded-full hover:bg-coffee-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+                title="Buscar por categoría"
+              >
                 <svg
                   className="h-5 w-5 text-coffee-950"
                   fill="none"
@@ -79,47 +157,111 @@ const Header = ({ user, onLogout }) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
                   />
                 </svg>
-              </div>
-              <input
-                type="text"
-                placeholder="Buscar libro por nombre..."
-                className="block w-full pr-10 px-4 py-2 border border-gray-300 bg-coffee-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-coffee-950 placeholder-coffee-950"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+              </button>
             </form>
 
             {/* Lista de Sugerencias */}
-            {suggestions.length > 0 && (
-              <div className="absolute left-0 right-0 mt-2 bg-white rounded-md shadow-lg py-1 z-50 border max-h-80 overflow-y-auto">
-                {suggestions.map((book, index) => (
-                  <div
-                    key={book.id}
-                    onClick={() => selectSuggestion(book.id)}
-                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition-colors ${
-                      index < suggestions.length - 1
-                        ? "border-b border-gray-100"
-                        : ""
-                    }`}
-                  >
-                    <img
-                      src={book.img}
-                      alt={book.title}
-                      className="w-8 h-10 object-cover rounded shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {book.title}
-                      </p>
-                      <p className="text-xs text-gray-500 truncate">
-                        {book.author}
-                      </p>
+            {(suggestions.length > 0 || isSearching) &&
+              searchTerm.trim().length >= 2 && (
+                <div className="absolute left-0 right-0 mt-2 bg-white rounded-md shadow-lg py-1 z-50 border max-h-80 overflow-y-auto">
+                  {isSearching ? (
+                    <div className="px-4 py-3 text-sm text-gray-500 flex items-center gap-2">
+                      <svg
+                        className="animate-spin h-4 w-4 text-orange-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        ></path>
+                      </svg>
+                      Buscando...
                     </div>
-                  </div>
-                ))}
+                  ) : suggestions.length === 0 ? (
+                    <div className="px-4 py-3 text-sm text-gray-500">
+                      No se encontraron resultados
+                    </div>
+                  ) : (
+                    <>
+                      {suggestions.map((book, index) => (
+                        <div
+                          key={book.id}
+                          onClick={() => selectSuggestion(book)}
+                          className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition-colors ${
+                            index < suggestions.length - 1
+                              ? "border-b border-gray-100"
+                              : ""
+                          }`}
+                        >
+                          {book.img && (
+                            <img
+                              src={book.img}
+                              alt={book.title}
+                              className="w-8 h-10 object-cover rounded shrink-0"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {book.title}
+                            </p>
+                            <p className="text-xs text-gray-500 truncate">
+                              {book.author}
+                            </p>
+                          </div>
+                          {book.price > 0 && (
+                            <span className="text-sm font-semibold text-gray-700">
+                              ${book.price}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                      <div
+                        onClick={() => {
+                          handleSearch({ preventDefault: () => {} });
+                        }}
+                        className="px-4 py-2 text-center text-sm text-orange-600 font-semibold hover:bg-orange-50 cursor-pointer border-t"
+                      >
+                        Ver todos los resultados para "{searchTerm}"
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+            {/* Dropdown de categorías */}
+            {showCategories && searchTerm.trim().length < 2 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white rounded-md shadow-lg py-3 z-50 border max-h-72 overflow-y-auto">
+                <p className="px-4 pb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Buscar por categoría
+                </p>
+                <div className="px-3 flex flex-wrap gap-2">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => selectCategory(cat)}
+                      className="px-3 py-1.5 text-sm bg-coffee-100 text-coffee-800 rounded-full hover:bg-orange-100 hover:text-orange-700 border border-coffee-200 hover:border-orange-300 transition-colors"
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
