@@ -18,9 +18,17 @@ const CheckoutSelected = () => {
       const result = await registerCartPurchases(items);
 
       if (result.failed > 0) {
+        const detail = result.errors.map((e) => `• ${e.item}: ${e.reason}`).join("\n");
         console.warn(
-          `Compras: ${result.succeeded} exitosas, ${result.failed} fallidas de ${result.total}`,
+          `Compras: ${result.succeeded} exitosas, ${result.failed} fallidas de ${result.total}\n${detail}`,
         );
+        // Si TODAS fallaron, mostrar error en pantalla sin navegar
+        if (result.succeeded === 0) {
+          setPurchaseError(
+            `No se pudo registrar la compra. Detalle: ${result.errors[0]?.reason ?? "error desconocido"}`,
+          );
+          return;
+        }
       }
 
       // Limpiar carrito y navegar al home con mensaje de éxito

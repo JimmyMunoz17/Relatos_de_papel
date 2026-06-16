@@ -20,6 +20,9 @@ import ForgotPassword from "./components/ForgotPassword";
 import CheckoutPage from "./pages/CheckoutPage";
 import SplashScreen from "./components/ui/SplashScreen";
 
+const IIS_APP_URL = "http://ec2amaz-uojiqrf/relatos-de-papel/";
+const IIS_BASENAME = new URL(IIS_APP_URL).pathname;
+
 function AppContent() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +60,7 @@ function AppContent() {
   }, [user]);
 
   // Manejo de login
-  
+
   const handleLogin = (userData) => {
     setUser(userData);
   };
@@ -105,7 +108,7 @@ function AppContent() {
   const PublicRoute = ({ children }) => {
     if (
       ["/login", "/login/register", "/login/forgotpassword"].includes(
-        location.pathname
+        location.pathname,
       ) &&
       user
     ) {
@@ -185,7 +188,7 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={IIS_BASENAME}>
       <AppContent />
     </BrowserRouter>
   );

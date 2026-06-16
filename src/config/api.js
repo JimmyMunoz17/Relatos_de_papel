@@ -21,6 +21,10 @@ export const API_OPERATOR_BASE =
   import.meta.env.VITE_API_OPERATOR_BASE ||
   "http://localhost:8080/api_rest_operador";
 
+/** API local Node + PostgreSQL para el catálogo */
+export const API_POSTGRES_BASE =
+  import.meta.env.VITE_API_POSTGRES_BASE || "http://localhost:3001/api";
+
 // ── Imagen por defecto ────────────────────────────────────
 export const DEFAULT_BOOK_IMG =
   import.meta.env.VITE_DEFAULT_BOOK_IMG ||
@@ -29,18 +33,18 @@ export const DEFAULT_BOOK_IMG =
 // ── Endpoints ────────────────────────────────────────────
 export const ENDPOINTS = {
   /** GET  — Todos los libros (facets) */
-  ALL_BOOKS: `${API_GATEWAY_BASE}/libros/search/facets`,
+  ALL_BOOKS: `${API_POSTGRES_BASE}/libros`,
 
   /** GET  — Libro por ID:  /libros/{id} */
-  BOOK_BY_ID: (id) => `${API_GATEWAY_BASE}/libros/${id}`,
+  BOOK_BY_ID: (id) => `${API_POSTGRES_BASE}/libros/${id}`,
 
   /** GET  — Búsqueda fuzzy:  /libros/search/fuzzy?q={query} */
   SEARCH_FUZZY: (query) =>
-    `${API_GATEWAY_BASE}/libros/search/fuzzy?q=${encodeURIComponent(query)}`,
+    `${API_POSTGRES_BASE}/libros/search?q=${encodeURIComponent(query)}`,
 
   /** GET  — Búsqueda por categoría (facets):  /libros/search/facets?q={cat} */
   SEARCH_CATEGORY: (category) =>
-    `${API_GATEWAY_BASE}/libros/search/facets?q=${encodeURIComponent(category)}`,
+    `${API_POSTGRES_BASE}/libros/category/${encodeURIComponent(category)}`,
 
   /** POST — Registrar compra:  /compras  body: { libroId, cantidad } */
   REGISTER_PURCHASE: `${API_OPERATOR_BASE}/compras`,

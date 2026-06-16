@@ -14,6 +14,8 @@ dist-ssr
 
 # Environment variables
 .env
+.env.desarrollo
+.env.production
 .env.local
 .env.production.local
 

@@ -267,25 +267,53 @@ export function getLocalCategories() {
 /**
  * Registra la compra de un libro en el servicio operador.
  * POST /compras  →  { libroId: number, cantidad: number }
+ *
+ * Notas:
+ * - libroId se convierte a Number. Si el ID de ElasticSearch no es numérico
+ *   se envía tal cual (string) para evitar que llegue null al backend.
+ * - En caso de error HTTP se lee el cuerpo de la respuesta para facilitar
+ *   el diagnóstico.
  */
 export async function registerPurchase(libroId, cantidad, signal) {
+  // Convertir a número solo si el valor es realmente numérico
+  const numericId = Number(libroId);
+  const safeLibroId = Number.isFinite(numericId) ? numericId : libroId;
+
   const res = await fetch(ENDPOINTS.REGISTER_PURCHASE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ libroId: Number(libroId), cantidad }),
+    body: JSON.stringify({ libroId: safeLibroId, cantidad }),
     signal,
   });
 
   if (!res.ok) {
-    throw new Error(`Error registrando compra: ${res.status}`);
+    // Intentar leer el mensaje de error del servidor para facilitar el diagnóstico
+    let errorDetail = "";
+    try {
+      const contentType = res.headers.get("content-type") || "";
+      errorDetail = contentType.includes("application/json")
+        ? JSON.stringify(await res.json())
+        : await res.text();
+    } catch (_) {
+      // ignorar si no se puede leer el cuerpo
+    }
+    console.error(
+      `[registerPurchase] HTTP ${res.status} para libroId=${safeLibroId}`,
+      errorDetail,
+    );
+    throw new Error(
+      `Error registrando compra (${res.status})${errorDetail ? `: ${errorDetail}` : ""}`,
+    );
   }
 
-  return res.json();
+  // Algunos endpoints devuelven 204 sin cuerpo
+  const contentType = res.headers.get("content-type") || "";
+  return contentType.includes("application/json") ? res.json() : null;
 }
 
 /**
  * Registra las compras de todos los artículos del carrito.
- * Envía un POST por cada libro y devuelve un resumen.
+ * Envía un POST por cada libro y devuelve un resumen con detalle de errores.
  */
 export async function registerCartPurchases(cartItems, signal) {
   const results = await Promise.allSettled(
@@ -293,7 +321,17 @@ export async function registerCartPurchases(cartItems, signal) {
   );
 
   const succeeded = results.filter((r) => r.status === "fulfilled").length;
-  const failed = results.filter((r) => r.status === "rejected").length;
+  const errors = results
+    .map((r, i) =>
+      r.status === "rejected"
+        ? { item: cartItems[i]?.title ?? cartItems[i]?.id, reason: r.reason?.message }
+        : null,
+    )
+    .filter(Boolean);
 
-  return { succeeded, failed, total: cartItems.length };
+  if (errors.length > 0) {
+    console.error("[registerCartPurchases] Compras fallidas:", errors);
+  }
+
+  return { succeeded, failed: errors.length, total: cartItems.length, errors };
 }
